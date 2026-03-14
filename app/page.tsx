@@ -28,6 +28,7 @@ export default function MemoryGame() {
   const [time, setTime] = useState(0);
   const [matches, setMatches] = useState(0);
   const [isSaving, setIsSaving] = useState(false);
+  const [leaderboard, setLeaderboard] = useState<any[]>([]);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
 
   // Initialize and Start Game
@@ -101,6 +102,19 @@ export default function MemoryGame() {
     }
   };
 
+  // Fetch Rankings
+  const fetchRankings = useCallback(async () => {
+    try {
+      const response = await fetch('/api/record');
+      const data = await response.json();
+      if (Array.isArray(data)) {
+        setLeaderboard(data.slice(0, 3)); // Only top 3
+      }
+    } catch (error) {
+      console.error('Failed to fetch rankings:', error);
+    }
+  }, []);
+
   // Save Score to Google Sheets via API Proxy
   const saveScore = useCallback(async (finalTime: number, name: string) => {
     setIsSaving(true);
@@ -120,6 +134,7 @@ export default function MemoryGame() {
       const data = await response.json();
       if (data.success) {
         console.log('Score saved successfully via API Proxy');
+        await fetchRankings(); // Update leaderboard after saving
       } else {
         throw new Error(data.error || 'Unknown error');
       }
@@ -129,20 +144,20 @@ export default function MemoryGame() {
     } finally {
       setIsSaving(false);
     }
-  }, []);
+  }, [fetchRankings]);
 
   // Check win condition
   useEffect(() => {
-    if (matches === FRUITS.length && cards.length > 0) {
+    if (matches === FRUITS.length && cards.length > 0 && gameState === 'playing') {
       setGameState('finished');
       saveScore(time, userName);
     }
-  }, [matches, cards.length, time, userName, saveScore]);
+  }, [matches, cards.length, time, userName, saveScore, gameState]);
 
   const formatTime = (seconds: number) => {
     const mins = Math.floor(seconds / 60);
     const secs = seconds % 60;
-    return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+    return `${mins}:${secs.toString().padStart(2, '0')}`;
   };
 
   // Reset and Go to Login
@@ -274,7 +289,7 @@ export default function MemoryGame() {
             {gameState === 'finished' && (
               <div className="glass animate-scale-in" style={{ 
                 background: 'white', padding: '60px 40px', borderRadius: '32px',
-                textAlign: 'center', width: '100%', maxWidth: '400px', 
+                textAlign: 'center', width: '100%', maxWidth: '500px', 
                 boxShadow: '0 40px 100px rgba(0,0,0,0.2)'
               }}>
                 <h2 style={{ fontSize: '2.5rem', fontWeight: 900, color: 'var(--primary)', fontStyle: 'italic', marginBottom: '8px' }}>성공!</h2>
@@ -287,6 +302,38 @@ export default function MemoryGame() {
                 <div style={{ marginBottom: '24px', fontSize: '0.875rem', color: isSaving ? 'var(--primary)' : 'var(--accent)', fontWeight: 600 }}>
                   {isSaving ? '⏳ 구글 시트에 기록을 저장 중입니다...' : '✅ 구글 시트에 기록이 저장되었습니다.'}
                 </div>
+
+                {/* Leaderboard TOP 3 */}
+                {!isSaving && leaderboard.length > 0 && (
+                  <div style={{ background: '#f8f9fa', borderRadius: '20px', padding: '20px', marginBottom: '24px', textAlign: 'left' }}>
+                    <h3 style={{ fontSize: '1rem', fontWeight: 800, color: '#2d3436', marginBottom: '12px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                      🏆 실시간 TOP 3
+                    </h3>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                      {leaderboard.map((record, i) => (
+                        <div key={i} style={{ 
+                          display: 'flex', justifyContent: 'space-between', alignItems: 'center', 
+                          padding: '12px 20px', background: 'white', borderRadius: '16px', 
+                          boxShadow: '0 2px 8px rgba(0,0,0,0.04)',
+                          border: i === 0 ? '1px solid #ffeaa7' : 'none'
+                        }}>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
+                            <span style={{ 
+                              fontWeight: 900, fontSize: '1.2rem',
+                              color: i === 0 ? '#fdcb6e' : (i === 1 ? '#95a5a6' : '#cc8e35'), 
+                              width: '24px', textAlign: 'center' 
+                            }}>{i + 1}</span>
+                            <span style={{ fontWeight: 700, color: '#2d3436', fontSize: '1.1rem' }}>{record.name}</span>
+                          </div>
+                          <span style={{ 
+                            fontWeight: 800, color: 'var(--primary)', fontSize: '1.1rem',
+                            background: '#fff0f0', padding: '4px 12px', borderRadius: '10px'
+                          }}>{record.finishtime}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
 
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
                   <button className="btn btn-restart" style={{ width: '100%', padding: '20px' }} onClick={startGame} disabled={isSaving}>
