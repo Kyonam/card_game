@@ -1,20 +1,9 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
-
 export const metadata: Metadata = {
-  title: "Funny Card Game",
-  description: "Funny Card Game",
+  title: "과일 맞추기 - 프리미엄 카드 게임",
+  description: "Next.js로 만든 세련된 과일 카드 짝맞추기 게임",
 };
 
 export default function RootLayout({
@@ -23,10 +12,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+    <html lang="ko">
+      <body className="antialiased">
         {children}
       </body>
     </html>
