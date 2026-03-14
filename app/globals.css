@@ -36,7 +36,9 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center; /* Center horizontally/vertically */
   width: 100%;
+  min-height: 100vh; /* Ensure full height for vertical centering */
   max-width: 1200px;
   margin: 0 auto;
   padding: 24px;
@@ -338,4 +340,82 @@ body {
 
 .animate-scale-in {
   animation: scaleIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+  .header-bar {
+    padding: 12px 20px;
+  }
+  
+  .stats-container {
+    padding: 16px 20px;
+    flex-direction: column;
+    gap: 16px;
+    text-align: center;
+  }
+
+  .player-info {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .stat-group {
+    width: 100%;
+    justify-content: center;
+    gap: 12px;
+  }
+
+  .stat-box {
+    padding: 8px 16px;
+    min-width: 90px;
+  }
+
+  .stat-value {
+    font-size: 1.2rem;
+  }
+
+  .landing-title {
+    font-size: 2.2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .main-container {
+    padding: 16px;
+    gap: 20px;
+  }
+
+  .logo-area {
+    font-size: 1.1rem;
+  }
+
+  .game-grid {
+    gap: 10px;
+  }
+
+  .card-face {
+    border-radius: 12px;
+  }
+
+  .card-front::after {
+    font-size: 1.5rem;
+  }
+
+  .landing-card {
+    padding: 40px 24px;
+  }
+
+  .landing-title {
+    font-size: 1.8rem;
+  }
+
+  .landing-desc {
+    font-size: 0.9rem;
+  }
+
+  .btn {
+    padding: 14px 20px;
+    font-size: 0.9rem;
+  }
 }
