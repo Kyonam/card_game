@@ -177,7 +177,7 @@ export default function MemoryGame() {
         <div className="landing-card">
           <h1 className="landing-title">과일 맞추기</h1>
           <p className="landing-desc">4x4 과일 카드 짝맞추기 게임에 도전하세요!</p>
-          
+
           <div style={{ textAlign: 'left' }}>
             <label className="input-label">플레이어 이름</label>
             <input
@@ -228,7 +228,7 @@ export default function MemoryGame() {
               <p style={{ fontSize: '0.75rem', color: '#636e72', fontWeight: 600 }}>일반 모드 • 레벨 1</p>
             </div>
           </div>
-          
+
           <div className="stat-group">
             <div className="stat-box">
               <span className="stat-label">시간</span>
@@ -280,16 +280,16 @@ export default function MemoryGame() {
 
         {/* Game Finished Modal & Pause Screen Overlay */}
         {(gameState === 'finished' || gameState === 'paused') && (
-          <div style={{ 
+          <div style={{
             position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
-            background: 'rgba(255, 255, 255, 0.4)', backdropFilter: 'blur(8px)', 
+            background: 'rgba(255, 255, 255, 0.4)', backdropFilter: 'blur(8px)',
             zIndex: 100, display: 'flex', alignItems: 'center', justifyContent: 'center',
             padding: '20px'
           }}>
             {gameState === 'finished' && (
-              <div className="glass animate-scale-in" style={{ 
+              <div className="glass animate-scale-in" style={{
                 background: 'white', padding: '60px 40px', borderRadius: '32px',
-                textAlign: 'center', width: '100%', maxWidth: '500px', 
+                textAlign: 'center', width: '100%', maxWidth: '500px',
                 boxShadow: '0 40px 100px rgba(0,0,0,0.2)'
               }}>
                 <h2 style={{ fontSize: '2.5rem', fontWeight: 900, color: 'var(--primary)', fontStyle: 'italic', marginBottom: '8px' }}>성공!</h2>
@@ -298,7 +298,7 @@ export default function MemoryGame() {
                   <span className="stat-label">최종 기록</span>
                   <p style={{ fontSize: '3rem', fontWeight: 900, color: '#2d3436' }}>{formatTime(time)}</p>
                 </div>
-                
+
                 <div style={{ marginBottom: '24px', fontSize: '0.875rem', color: isSaving ? 'var(--primary)' : 'var(--accent)', fontWeight: 600 }}>
                   {isSaving ? '⏳ 구글 시트에 기록을 저장 중입니다...' : '✅ 구글 시트에 기록이 저장되었습니다.'}
                 </div>
@@ -311,21 +311,21 @@ export default function MemoryGame() {
                     </h3>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                       {leaderboard.map((record, i) => (
-                        <div key={i} style={{ 
-                          display: 'flex', justifyContent: 'space-between', alignItems: 'center', 
-                          padding: '12px 20px', background: 'white', borderRadius: '16px', 
+                        <div key={i} style={{
+                          display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+                          padding: '12px 20px', background: 'white', borderRadius: '16px',
                           boxShadow: '0 2px 8px rgba(0,0,0,0.04)',
                           border: i === 0 ? '1px solid #ffeaa7' : 'none'
                         }}>
                           <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
-                            <span style={{ 
+                            <span style={{
                               fontWeight: 900, fontSize: '1.2rem',
-                              color: i === 0 ? '#fdcb6e' : (i === 1 ? '#95a5a6' : '#cc8e35'), 
-                              width: '24px', textAlign: 'center' 
+                              color: i === 0 ? '#fdcb6e' : (i === 1 ? '#95a5a6' : '#cc8e35'),
+                              width: '24px', textAlign: 'center'
                             }}>{i + 1}</span>
                             <span style={{ fontWeight: 700, color: '#2d3436', fontSize: '1.1rem' }}>{record.name}</span>
                           </div>
-                          <span style={{ 
+                          <span style={{
                             fontWeight: 800, color: 'var(--primary)', fontSize: '1.1rem',
                             background: '#fff0f0', padding: '4px 12px', borderRadius: '10px'
                           }}>{record.finishtime}</span>
@@ -345,9 +345,9 @@ export default function MemoryGame() {
                 </div>
               </div>
             )}
-            
+
             {gameState === 'paused' && (
-              <div className="glass animate-scale-in" style={{ 
+              <div className="glass animate-scale-in" style={{
                 background: 'white', padding: '40px', borderRadius: '24px',
                 textAlign: 'center', width: '100%', maxWidth: '300px',
                 boxShadow: '0 20px 50px rgba(0,0,0,0.1)'
@@ -368,9 +368,9 @@ export default function MemoryGame() {
       </main>
 
       {/* Decorative footer fruits from design */}
-      <footer style={{ 
-        position: 'fixed', bottom: 20, width: '100%', display: 'flex', 
-        justifyContent: 'center', gap: '60px', opacity: 0.1, zIndex: -1 
+      <footer style={{
+        position: 'fixed', bottom: 20, width: '100%', display: 'flex',
+        justifyContent: 'center', gap: '60px', opacity: 0.1, zIndex: -1
       }}>
         <span>🍎</span><span>🍌</span><span>🍇</span><span>🍓</span><span>🍍</span><span>🍉</span>
       </footer>
